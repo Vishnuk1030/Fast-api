@@ -96,3 +96,5 @@ async def delete_todo(id:int):
         return obj
     except:
         raise HTTPException(status_code=404,detail="Todo not found")
+
+
