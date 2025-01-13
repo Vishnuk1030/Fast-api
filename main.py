@@ -3,7 +3,14 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+
 class Package(BaseModel):
+    name: str
+    number: int
+    description: Optional[str]=None
+    
+class PackageIn(BaseModel):
+    secret_id:int
     name: str
     number: int
     description: Optional[str]=None
@@ -11,10 +18,26 @@ class Package(BaseModel):
 app = FastAPI()
 
 # pydantic BaseModel
-@app.post('/package/{priority}')
-async def create_package(priority:int,package:Package,value:bool):
-    return {"priority":priority,**package.dict(),"value":value}
+# @app.post('/package/{priority}')
+# async def create_package(priority:int,package:Package,value:bool):
+#     return {"priority":priority,**package.dict(),"value":value}
     
+# @app.post('/package/',response_model=Package)
+# async def make_package(package:PackageIn):
+#     return package
+
+# @app.post('/package/',response_model=Package,respose_model_exclude_unset=True)
+# async def make_package(package:PackageIn):
+#     return package
+
+# @app.post('/package/',response_model=Package,response_model_exclude={"description"})
+# async def make_package(package:PackageIn):
+#     return package
+
+@app.post('/package/',response_model=Package,response_model_include={"description"})
+async def make_package(package:PackageIn):
+    return package
+
 @app.get('/')
 async def myFunc():
     return {"Hello ":"world"}
