@@ -71,7 +71,10 @@ async def todo_post(todo:Todo):
 
 @app.get('/todo/',response_model=List[Todo])
 async def todo_getall():
-    return store_todo
+    if len(store_todo)>0:
+        return store_todo
+    else:
+        raise HTTPException(status_code=404,detail="Todo not found")
 
 @app.get('/todo/{id}')
 async def get_one_todo(id:int):
